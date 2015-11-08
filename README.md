@@ -1,4 +1,4 @@
-# ossec-server
+#  ossec-server
 
 An ossec-server image with the ability to separate the ossec configuration/data from the container. This image is designed to be as turnkey as possible, supporting out of the box:
 
