@@ -1,4 +1,4 @@
-#  ossec-server
+# ossec-server
 
 An ossec-server image with the ability to separate the ossec configuration/data from the container. This image is designed to be as turnkey as possible, supporting out of the box:
 
@@ -45,3 +45,9 @@ docker exec -ti ossec-server /var/ossec/bin/list_agents -a
 ##### A default localhost agent is added
 
 On first launch, the ossec server will not start up properly and bind to port 1514, unless at least one agent to be present in the client.keys file. To avoid that issue, a local agent is setup by default. See [this bug](https://groups.google.com/forum/#!topic/ossec-list/qeC_h3EZCxQ) with OSSEC.
+
+## Release notes
+
+Author xetusoss 
+
+Maintained by Wazuh, Inc
