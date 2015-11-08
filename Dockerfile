@@ -1,6 +1,7 @@
 FROM phusion/baseimage
 MAINTAINER Jose Luis Ruiz <jose@wazuh.com>
 
+
 #
 # Follow the server installation parameters specified on the OSSEC website for
 # ubuntu installations
