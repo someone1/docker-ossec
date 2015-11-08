@@ -1,5 +1,5 @@
 FROM phusion/baseimage
-MAINTAINER Terence Kent <tkent@xetus.com>
+MAINTAINER Jose Luis Ruiz <jose@wazuh.com>
 
 #
 # Follow the server installation parameters specified on the OSSEC website for
