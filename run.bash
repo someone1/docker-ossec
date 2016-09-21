@@ -132,7 +132,7 @@ trap "ossec_shutdown; exit" SIGINT SIGTERM
 # Startup the services
 #
 chmod -R g+rw ${DATA_PATH}/logs/ ${DATA_PATH}/stats/ ${DATA_PATH}/queue/ ${DATA_PATH}/etc/client.keys
-/var/ossec/bin/ossec-control start
+
 if [ $AUTO_ENROLLMENT_ENABLED == true ]
 then
   echo "Starting ossec-authd..."
@@ -141,6 +141,13 @@ then
 fi
 sleep 15 # give ossec a reasonable amount of time to start before checking status
 LAST_OK_DATE=`date +%s`
+
+## Update rules and decoders with Wazuh Ruleset
+cd /var/ossec/update/ruleset && python ossec_ruleset.py
+
+/usr/bin/nodejs /var/ossec/api/app.js > /var/ossec/api/api.log &
+
+service ossec restart
 
 #
 # Watch the service in a while loop, exit if the service exits
