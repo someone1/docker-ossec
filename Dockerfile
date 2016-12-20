@@ -2,7 +2,7 @@ FROM phusion/baseimage
 MAINTAINER Jose Luis Ruiz <jose@wazuh.com>
 
 
-RUN apt-get update && apt-get install -y python-software-properties nodejs debconf-utils daemontools wget vim npm gcc make libssl-dev unzip
+RUN apt-get update && apt-get install -y python-software-properties nodejs debconf-utils daemontools wget vim npm gcc make libssl-dev unzip git python
 RUN cd root && mkdir ossec_tmp && cd ossec_tmp
 
 # Copy the unattended installation config file from the build context
@@ -11,21 +11,24 @@ RUN cd root && mkdir ossec_tmp && cd ossec_tmp
 # everything except e-mail notifications
 
 
-RUN wget https://github.com/wazuh/ossec-wazuh/archive/v1.1.1.tar.gz &&\
-    tar xvfz v1.1.1.tar.gz &&\
-    mv ossec-wazuh-1.1.1 /root/ossec_tmp/ossec-wazuh &&\
-    rm v1.1.1.tar.gz
+RUN cd /root/ossec_tmp/ &&\
+    git clone -b stable https://github.com/wazuh/wazuh.git ossec-wazuh
 #ADD ossec-wazuh /root/ossec_tmp/ossec-wazuh
 COPY preloaded-vars.conf /root/ossec_tmp/ossec-wazuh/etc/preloaded-vars.conf
 
 RUN /root/ossec_tmp/ossec-wazuh/install.sh
 
-RUN wget https://github.com/wazuh/wazuh-API/archive/v1.2.tar.gz &&\
-    tar xvfz v1.2.tar.gz &&\
-    mkdir -p /var/ossec/api && cp -r wazuh-API-1.2/* /var/ossec/api &&\
+RUN wget https://github.com/wazuh/wazuh-api/archive/v1.2.1.tar.gz -O wazuh-API-1.2.1.tar.gz &&\
+    tar -xvf wazuh-API-*.tar.gz &&\
+    mkdir -p /var/ossec/api && cp -r wazuh-API-*/* /var/ossec/api &&\
     cd /var/ossec/api && npm install
 
-RUN apt-get remove --purge -y gcc make && apt-get clean
+RUN apt-get remove --purge -y gcc git make && apt-get clean
+
+RUN mkdir -p /var/ossec/update/ruleset &&\
+    cd /var/ossec/update/ruleset &&\
+    chmod +x /var/ossec/update/ruleset/ossec_ruleset.py &&\
+    /var/ossec/update/ruleset/ossec_ruleset.py -s
 
 # Set persistent volumes for the /etc and /log folders so that the logs
 # and agent keys survive a start/stop and expose ports for the
