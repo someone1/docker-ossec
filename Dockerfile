@@ -20,7 +20,7 @@ RUN /root/ossec_tmp/ossec-wazuh/install.sh
 
 RUN wget https://github.com/wazuh/wazuh-api/archive/v1.2.1.tar.gz -O wazuh-API-1.2.1.tar.gz &&\
     tar -xvf wazuh-API-*.tar.gz &&\
-    mkdir -p /var/ossec/api && cp -r wazuh-API-*/* /var/ossec/api &&\
+    mkdir -p /var/ossec/api && cp -r wazuh-api-*/* /var/ossec/api &&\
     cd /var/ossec/api && npm install
 
 RUN apt-get remove --purge -y gcc git make && apt-get clean
